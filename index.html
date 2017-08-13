@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>bootrstrpvue</title>
+	<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+	<script type="text/javascript" src="js/jquery-1.12.2.min.js"></script>
+	<script type="text/javascript"	src="js/bootstrap.min.js"></script>
+	<!-- vue版本问题 -->
+	<script type="text/javascript" src="http://static.runoob.com/assets/vue/1.0.11/vue.min.js"></script>
+</head>
+<style type="text/css">
+	.form-group label,.form-group input{display: inline-block;}
+	.form-control{width: 93%;}
+</style>
+<body>
+	<div class="container" id="box">
+		<div class="rol">
+			<form action="" >
+				<div class="form-group">
+					<label for="usename">姓名</label>
+					<input class="form-control" id="usename" v-model="usename" type="text" name="usename">
+				</div>
+				<div class="form-group">
+					<label for="sex">性别</label>
+					<input class="form-control" id="sex" v-model="sex" type="text" name="sex">
+				</div>
+				<div class="form-group">
+					<label for="age">年龄</label>
+					<input class="form-control" id="age" v-model="age" type="text" name="age">
+				</div>
+				<div class="form-group">
+					<input type="button" class="but btn-primary" v-on:click="add()" value="添加"  name="">
+					<input type="reset" class="but btn-danger" value="重置" name="">
+				</div>
+			</form>
+			<p></p><br>
+			<table class="table-bordered table table-hover">
+				<caption>用户信息表</caption>
+				<tr class="text-center">
+					<th class="text-center">序号</th>
+					<th class="text-center">姓名</th>
+					<th class="text-center">性别</th>
+					<th class="text-center">年龄</th>
+					<th class="text-center">操作</th>
+				</tr>
+				<tr class="text-center" v-for="item in myData">
+					<td>{{$index+1}}</td>
+					<td>{{item.usename}}</td>
+					<td>{{item.sex}}</td>
+					<td>{{item.age}}</td>
+					<td><button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#layer" v-on:click="nowIndex=$index">删除</button></td>
+				</tr>
+				<tr v-show="myData.length>0">
+					<td colspan="5" class="text-right">
+						<button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#layer"  v-on:click="nowIndex=-2">删除全部</button>
+					</td>
+				</tr>
+				<tr class="" v-show="myData.length==0">
+					<td colspan="5" class="text-center">
+						<p class="text-center">暂无数据....</p>
+					</td>
+				</tr>
+			</table>
+			<!-- 模态框 -->
+			<div class="modal" role="dialog" id="layer">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal"><span>&times</span></button>
+							<h3 class="modal-title">确认删除？</h3>
+						</div>
+						<div class="modal-body text-right">
+							<button class="btn btn-primary btn-sm" data-dismiss="modal">取消</button>
+							<button class="btn btn-warning btn-sm" data-dismiss="modal" v-on:click="del(nowIndex)">确认</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="all"></div>
+	<script type="text/javascript">
+		 	
+		window.onload=function(){
+			new Vue({
+		    el:"#box", //el指代选择器如 id，class，tagName
+		    data:{ //参数
+		    	myData:[],
+		    	usename:"", //这里仅仅是为了生硬的强化记忆vue双括号标签写法
+		        sex:"",
+		        age:"",
+		        nowIndex:'-10',
+		    },
+		    methods:{  //在methods对象中定义方法
+		        add: function(){
+		            this.myData.push({
+		            	usename:this.usename,
+		            	age:this.age,
+		            	sex:this.sex
+		            });
+		            //输入后清空
+		            this.usename="";
+		            this.age="";
+		            this.sex="";
+		        },
+		        del:function(n){
+		        	if(n=="-2"){
+		        		this.myData=[];
+		        	}else{
+		        		this.myData.splice(n,1);
+		        	}
+		        }
+		    }
+		});
+	}
+	</script>
+</body>
+</html>
